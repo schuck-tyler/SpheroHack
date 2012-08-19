@@ -2,4 +2,6 @@
 <resources>
     <string name="app_name">Sphero Hello World</string>
     <string name="instruction">Click the \"Hello, World!\" button to flash the LED</string>
+    <string name="hello_world">Hello, world!</string>
+    <string name="menu_settings">Menu Settings</string>
 </resources>
