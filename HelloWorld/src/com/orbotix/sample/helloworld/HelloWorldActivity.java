@@ -1,32 +1,19 @@
 package com.orbotix.sample.helloworld;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import orbotix.macro.BackLED;
 import orbotix.robot.app.StartupActivity;
-import orbotix.robot.base.FrontLEDOutputCommand;
 import orbotix.robot.base.RGBLEDOutputCommand;
 import orbotix.robot.base.Robot;
 import orbotix.robot.base.RobotControl;
 import orbotix.robot.base.RobotProvider;
-import orbotix.robot.base.TiltDriveAlgorithm;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 
 /**
  * Connects to an available Sphero robot, and then flashes its LED.
  */
-public class HelloWorldActivity extends Activity implements SensorEventListener
+public class HelloWorldActivity extends Activity
 {
     /**
      * ID for launching the StartupActivity for result to connect to the robot
@@ -37,20 +24,6 @@ public class HelloWorldActivity extends Activity implements SensorEventListener
      * The Sphero Robot
      */
     private Robot mRobot;
-    private RobotControl robot_control;
-    
-    private SensorManager sensor_manager;
-    private Sensor accelerometer;
-    
-    private Float[] endurance = new Float[3];
-    
-    Map<String, ArrayList<Float>> player_values;
-    
-    // For endurance
-    long time_x;
-    long time_y;
-    boolean pos_x;
-    boolean pos_y;
     
     /** Called when the activity is first created. */
     @Override
@@ -58,16 +31,6 @@ public class HelloWorldActivity extends Activity implements SensorEventListener
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        
-    	this.sensor_manager = (SensorManager)getSystemService(SENSOR_SERVICE);
-    	
-    	/*List<Sensor> sensors = sensor_manager.getSensorList(Sensor.TYPE_ACCELEROMETER);
-    	Sensor s;
-    	if (!sensors.isEmpty())
-    		s = sensors.get(0);*/
-    	
-    	this.accelerometer = this.sensor_manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-    	player_values = new HashMap<String, ArrayList<Float>>();
     }
 
     @Override
@@ -89,19 +52,8 @@ public class HelloWorldActivity extends Activity implements SensorEventListener
             final String robot_id = data.getStringExtra(StartupActivity.EXTRA_ROBOT_ID);
             if(robot_id != null && !robot_id.equals("")){
                 mRobot = RobotProvider.getDefaultProvider().findRobot(robot_id);
-                this.robot_control = RobotProvider.getDefaultProvider().getRobotControl(mRobot);
-                this.robot_control.setDriveAlgorithm(new TiltDriveAlgorithm());
-            	sensor_manager.registerListener(this, this.accelerometer, SensorManager.SENSOR_DELAY_GAME);
-            	endurance[0] = endurance[1] = endurance[2] = 0.0f;
-                FrontLEDOutputCommand.sendCommand(mRobot, 255.0f);
             }
             
-            ArrayList<Float> vals = new ArrayList<Float>();
-            vals.add(0.0f);
-            vals.add(0.0f);
-            vals.add(0.0f);
-            player_values.put("Derp", vals);
-         
             //Start blinking
             blink(false);
         }
@@ -110,9 +62,9 @@ public class HelloWorldActivity extends Activity implements SensorEventListener
     @Override
     protected void onStop() {
         super.onStop();
-        robot_control.stopMotors();
+
         mRobot = null;
-        
+
         //Disconnect Robot
         RobotProvider.getDefaultProvider().removeAllControls();
     }
@@ -141,35 +93,4 @@ public class HelloWorldActivity extends Activity implements SensorEventListener
             }, 1000);
         }
     }
-
-	@Override
-	public void onAccuracyChanged(Sensor arg0, int arg1) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onSensorChanged(SensorEvent event) {
-		if(mRobot == null || event == null)
-			return;
-		if(event.sensor.getType() != Sensor.TYPE_ACCELEROMETER)
-			return;
-		
-		float x = event.values[0];
-		float y = event.values[1];
-		float z = event.values[2];
-		
-		int num_players = player_values.size();
-		for (String player : player_values.keySet()) {
-			x += player_values.get(player).get(0);
-			y += player_values.get(player).get(1);
-			z += player_values.get(player).get(2);
-		}
-		x /= num_players;
-		y /= num_players;
-		z /= num_players;
-		
-		robot_control.drive(x, y, z);
-		System.out.println ("x: " + Float.toString(x) + ", y: " + Float.toString(y) + ", z: " + Float.toString(z));
-	}
 }
