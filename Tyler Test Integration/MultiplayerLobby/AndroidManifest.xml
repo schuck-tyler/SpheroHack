@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.orbotix.sample.multiplayerlobby"
+      android:versionCode="1"
+      android:versionName="1.0">
+      
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    
+    <application android:label="@string/app_name" >
+
+        <!-- Available Games list -->
+        <activity
+                android:name="AvailableGamesActivity"
+                android:label="@string/app_name"
+                android:screenOrientation="landscape"
+                android:configChanges="screenLayout|keyboard|keyboardHidden"
+                android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+                >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Game Lobby -->
+        <activity
+            android:name="LobbyActivity"
+            android:screenOrientation="landscape"
+            android:configChanges="screenLayout|keyboard|keyboardHidden"
+            />
+
+        <!-- MultiplayerManager service -->
+        <service android:name="orbotix.multiplayer.MultiplayerManager"
+                 />
+        
+		<activity android:name="HelloWorld"
+		    	  android:screenOrientation="landscape"
+		    	  android:launchMode="singleTop"/>
+		
+        <activity android:name="orbotix.robot.app.StartupActivity"
+                  android:launchMode="singleTop"
+                  android:theme="@android:style/Theme.Translucent"
+                  />
+
+    </application>
+</manifest> 
