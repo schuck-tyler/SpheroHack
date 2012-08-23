@@ -46,12 +46,6 @@ public class HelloWorldActivity extends Activity implements SensorEventListener
     
     Map<String, ArrayList<Float>> player_values;
     
-    // For endurance
-    long time_x;
-    long time_y;
-    boolean pos_x;
-    boolean pos_y;
-    
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -60,12 +54,6 @@ public class HelloWorldActivity extends Activity implements SensorEventListener
         setContentView(R.layout.main);
         
     	this.sensor_manager = (SensorManager)getSystemService(SENSOR_SERVICE);
-    	
-    	/*List<Sensor> sensors = sensor_manager.getSensorList(Sensor.TYPE_ACCELEROMETER);
-    	Sensor s;
-    	if (!sensors.isEmpty())
-    		s = sensors.get(0);*/
-    	
     	this.accelerometer = this.sensor_manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     	player_values = new HashMap<String, ArrayList<Float>>();
     }
@@ -142,13 +130,11 @@ public class HelloWorldActivity extends Activity implements SensorEventListener
         }
     }
 
-	@Override
 	public void onAccuracyChanged(Sensor arg0, int arg1) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void onSensorChanged(SensorEvent event) {
 		if(mRobot == null || event == null)
 			return;
