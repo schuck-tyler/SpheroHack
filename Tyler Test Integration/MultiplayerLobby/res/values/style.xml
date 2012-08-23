@@ -13,7 +13,7 @@
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_alignParentBottom">true</item>
-        <item name="android:background">@drawable/black_titlebar_bg</item>
+        <item name="android:background">#07000000</item>
     </style>
 
     <style name="Label">
