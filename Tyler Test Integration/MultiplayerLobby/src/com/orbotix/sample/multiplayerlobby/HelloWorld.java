@@ -40,7 +40,7 @@ import android.hardware.SensorManager;
 /**
  * Connects to an available Sphero robot, and then flashes its LED.
  */
-public class HelloWorld extends Activity implements SensorEventListener
+public class HelloWorld extends Activity
 {
 	private final static int TOTAL_PACKET_COUNT = 200;
 	private final static int PACKET_COUNT_THRESHOLD = 50;
@@ -121,7 +121,7 @@ public class HelloWorld extends Activity implements SensorEventListener
 				mRobot = RobotProvider.getDefaultProvider().findRobot(robot_id);
 				this.robot_control = RobotProvider.getDefaultProvider().getRobotControl(mRobot);
 				this.robot_control.setDriveAlgorithm(new TiltDriveAlgorithm());
-				sensor_manager.registerListener(this, this.accelerometer, SensorManager.SENSOR_DELAY_GAME);
+				sensor_manager.registerListener(this.accelerometer_listener, this.accelerometer, SensorManager.SENSOR_DELAY_GAME);
 
 				FrontLEDOutputCommand.sendCommand(mRobot, 255.0f);
 				requestDataStreaming();
@@ -142,46 +142,51 @@ public class HelloWorld extends Activity implements SensorEventListener
 		//Disconnect Robot
 		RobotProvider.getDefaultProvider().removeAllControls();
 	}
+	
+	private SensorEventListener accelerometer_listener = new SensorEventListener() {
 
-	@Override
-	public void onAccuracyChanged(Sensor arg0, int arg1) {
-
-	}
-
-	@Override
-	public void onSensorChanged(SensorEvent event) {
-		System.out.print("In onSensorChanged, ");
-		if(mRobot == null || event == null)
-			return;
-		System.out.print("(mRobot != null && event != null), ");
-		if(event.sensor.getType() != Sensor.TYPE_ACCELEROMETER)
-			return;
-		System.out.print("event is from accelerometer, ");
-		if (roll_back)
-			return;
-		System.out.print("(!roll_back)");
-		System.out.println();
-
-
-		float x = event.values[0];
-		float y = event.values[1];
-		float z = event.values[2];
-
-		if(player_values != null) {
-			int num_players = player_values.size();
-			for (String player : player_values.keySet()) {
-				x += player_values.get(player).get(0);
-				y += player_values.get(player).get(1);
-				z += player_values.get(player).get(2);
-			}
-			x /= num_players;
-			y /= num_players;
-			z /= num_players;
+		@Override
+		public void onAccuracyChanged(Sensor arg0, int arg1) {
+			// TODO Auto-generated method stub
+			
 		}
 
-		robot_control.drive(x, y, z);
-		//System.out.println ("x: " + Float.toString(x) + ", y: " + Float.toString(y) + ", z: " + Float.toString(z));
-	}
+		@Override
+		public void onSensorChanged(SensorEvent event) {
+			System.out.print("In onSensorChanged, ");
+			if(mRobot == null || event == null)
+				return;
+			System.out.print("(mRobot != null && event != null), ");
+			if(event.sensor.getType() != Sensor.TYPE_ACCELEROMETER)
+				return;
+			System.out.print("event is from accelerometer, ");
+			if (roll_back)
+				return;
+			System.out.print("(!roll_back)");
+			System.out.println();
+
+
+			float x = event.values[0];
+			float y = event.values[1];
+			float z = event.values[2];
+
+			if(player_values != null) {
+				int num_players = player_values.size();
+				for (String player : player_values.keySet()) {
+					x += player_values.get(player).get(0);
+					y += player_values.get(player).get(1);
+					z += player_values.get(player).get(2);
+				}
+				x /= num_players;
+				y /= num_players;
+				z /= num_players;
+			}
+
+			robot_control.drive(x, y, z);
+			//System.out.println ("x: " + Float.toString(x) + ", y: " + Float.toString(y) + ", z: " + Float.toString(z));
+		}
+		
+	};
 
 	/**
 	 * AsyncDataListener that will be assigned to the DeviceMessager, listen for streaming data, and then do the
