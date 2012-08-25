@@ -121,22 +121,6 @@ public class LobbyActivity extends Activity {
             }
         });
 
-        //When game data is received (a chat message), show the message in the chatroom area
-        mMultiplayerClient.setOnGameDataReceivedListener(new LocalMultiplayerClient.OnGameDataReceivedListener() {
-            @Override
-            public void onGameDataReceived(Context context, JSONObject game_data, RemotePlayer sender) {
-
-                if(game_data.has("CHAT")){
-
-                    try {
-                        addChatMessage(sender.getName(), game_data.getString("CHAT"));
-                    } catch (JSONException e) {
-                        Log.e(AvailableGamesActivity.TAG, "Failed to get chat message from game data.", e);
-                    }
-                }
-            }
-        });
-        
         //When the game starts, reflect this in the TextView
         mMultiplayerClient.setOnGameStartListener(new LocalMultiplayerClient.OnGameStartListener() {
             @Override
@@ -203,55 +187,13 @@ public class LobbyActivity extends Activity {
         mMultiplayerClient.stop();
     }
 
-
-    private void addChatMessage(String username, String message){
-        
-        StringBuilder str = new StringBuilder();
-        str.append(mChatroomText.getText());
-        str.append(username+": "+message+"\n");
-        mChatroomText.setText(str.toString());
-    }
-    
-    private void sendChatMessage(String message){
-        
-        JSONObject json = new JSONObject();
-        
-        try {
-            json.put("CHAT", message);
-        } catch (JSONException e) {
-            throw new RuntimeException("Failed to send game data.", e);
-        }
-
-        mMultiplayerClient.sendGameDataToAll(json);
-    }
-
-    /**
-     * When the user clicks the "Send" button, send the message in teh chat field, if any
-     * @param v
-     */
-    public void onSendClick(View v){
-        
-        final String message = mChatField.getText().toString();
-        
-        if(message != null && !message.equals("")){
-
-            sendChatMessage(message);
-            addChatMessage(mMultiplayerClient.getLocalPlayer().getName(), message);
-            mChatField.setText("");
-
-        }
-    }
-
     /**
      * When the user clicks the "Start Game" button, start the game
      * @param v
      */
     public void onStartGameClick(View v){
-    	Intent i;
-    	//if(mMultiplayerClient.getIsHost())
-    		i = new Intent(this, HelloWorld.class);
-//    	//else
-//    		//i = new Intent(this, HelloWorldClient.class);
+    	Intent i = new Intent(this, HelloWorld.class);
+
 //        List<RemotePlayer> players = new LinkedList<RemotePlayer>();
 //        updatePlayerList(players);
 //        
@@ -268,11 +210,12 @@ public class LobbyActivity extends Activity {
 //	    	HelloWorld.mMultiplayerClient = mMultiplayerClient;
 //	        
 //	        i.putExtra(HelloWorld.own_player, mMultiplayerClient.getLocalPlayer().getName());
-//        } else {
-////        	HelloWorldClient.player_values = players_map;
-////	    	HelloWorldClient.mMultiplayerClient = mMultiplayerClient;
-////	        
-////	        i.putExtra(HelloWorldClient.own_player, mMultiplayerClient.getLocalPlayer().getName());
+//        }
+//        else {
+//        	HelloWorldClient.player_values = players_map;
+//	    	HelloWorldClient.mMultiplayerClient = mMultiplayerClient;
+//	        
+//	        i.putExtra(HelloWorldClient.own_player, mMultiplayerClient.getLocalPlayer().getName());
 //        }
         
         startActivity(i);

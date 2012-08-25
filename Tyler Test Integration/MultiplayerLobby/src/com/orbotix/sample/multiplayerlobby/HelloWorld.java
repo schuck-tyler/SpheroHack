@@ -30,9 +30,11 @@ import orbotix.robot.base.RobotControl;
 import orbotix.robot.base.RobotProvider;
 import orbotix.robot.base.RollCommand;
 import orbotix.robot.base.SetDataStreamingCommand;
+import orbotix.robot.widgets.ControllerActivity;
 import orbotix.robot.base.TiltDriveAlgorithm;
 import orbotix.robot.sensor.DeviceSensorsData;
 import orbotix.robot.sensor.LocatorData;
+import orbotix.robot.widgets.calibration.CalibrationView;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -41,7 +43,7 @@ import android.hardware.SensorManager;
 /**
  * Connects to an available Sphero robot, and then flashes its LED.
  */
-public class HelloWorld extends Activity implements SensorEventListener
+public class HelloWorld extends ControllerActivity implements SensorEventListener
 {
 	protected PowerManager.WakeLock mWakeLock;
 	private final static int TOTAL_PACKET_COUNT = 200;
@@ -79,6 +81,9 @@ public class HelloWorld extends Activity implements SensorEventListener
 		this.sensor_manager = (SensorManager)getSystemService(SENSOR_SERVICE);
 		this.accelerometer = this.sensor_manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
+        //Add the CalibrationView as a Controller
+        addController((CalibrationView)findViewById(R.id.calibration));
+        
 		if(mMultiplayerClient != null) {
 			// On data recieved
 			mMultiplayerClient.setOnGameDataReceivedListener(new LocalMultiplayerClient.OnGameDataReceivedListener() {
@@ -88,7 +93,6 @@ public class HelloWorld extends Activity implements SensorEventListener
 					if(game_data.has("CHAT")){
 
 						try {
-							//addChatMessage(sender.getName(), game_data.getString("CHAT"));
 							String[] acceleration = game_data.getString("CHAT").split(" ");
 							for(int i = 0; i < acceleration.length; i++) {
 								player_values.get(sender.getName()).set(i, Float.parseFloat(acceleration[i]));
@@ -101,8 +105,7 @@ public class HelloWorld extends Activity implements SensorEventListener
 			});
 		}
 
-        /* This code together with the one in onDestroy() 
-         * will make the screen be always on until this Activity gets destroyed. */
+        /* will make the screen be always on until this Activity gets destroyed. */
         final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         this.mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "My Tag");
         this.mWakeLock.acquire();
@@ -111,7 +114,6 @@ public class HelloWorld extends Activity implements SensorEventListener
 	@Override
 	protected void onStart() {
 		super.onStart();
-
 		//Launch the StartupActivity to connect to the robot
 		Intent i = new Intent(this, StartupActivity.class);
 		startActivityForResult(i, STARTUP_ACTIVITY);
@@ -188,12 +190,10 @@ public class HelloWorld extends Activity implements SensorEventListener
 		}
 
 		robot_control.drive(x, y, z);
-		//System.out.println ("x: " + Float.toString(x) + ", y: " + Float.toString(y) + ", z: " + Float.toString(z));
 	}
 
 	/**
 	 * AsyncDataListener that will be assigned to the DeviceMessager, listen for streaming data, and then do the
-	 *
 	 */
 	private DeviceMessenger.AsyncDataListener mDataListener = new DeviceMessenger.AsyncDataListener() {
 		@Override
