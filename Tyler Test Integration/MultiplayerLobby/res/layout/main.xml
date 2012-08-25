@@ -5,5 +5,10 @@
     android:background="#ff888888"
     >
 
+   	<orbotix.robot.widgets.calibration.CalibrationView
+        android:id="@+id/calibration"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        />
 </RelativeLayout>
 

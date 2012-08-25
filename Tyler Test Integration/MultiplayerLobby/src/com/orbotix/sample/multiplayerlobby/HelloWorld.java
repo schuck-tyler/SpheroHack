@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.util.Log;
 import orbotix.macro.BackLED;
 import orbotix.multiplayer.LocalMultiplayerClient;
@@ -29,9 +30,11 @@ import orbotix.robot.base.RobotControl;
 import orbotix.robot.base.RobotProvider;
 import orbotix.robot.base.RollCommand;
 import orbotix.robot.base.SetDataStreamingCommand;
+import orbotix.robot.widgets.ControllerActivity;
 import orbotix.robot.base.TiltDriveAlgorithm;
 import orbotix.robot.sensor.DeviceSensorsData;
 import orbotix.robot.sensor.LocatorData;
+import orbotix.robot.widgets.calibration.CalibrationView;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -42,12 +45,13 @@ import android.hardware.SensorManager;
  */
 public class HelloWorld extends Activity
 {
+	protected PowerManager.WakeLock mWakeLock;
 	private final static int TOTAL_PACKET_COUNT = 200;
 	private final static int PACKET_COUNT_THRESHOLD = 50;
 	private int mPacketCounter;
 
-	private final static int BOUNDARY_DISTANCE_FROM_CENTER_CM = 2000;
-	private final static int BACK_IN_BOUNDS_FROM_CENTER_CM = 140;
+	private final static int BOUNDARY_DISTANCE_FROM_CENTER_CM = 200;
+	private final static int BACK_IN_BOUNDS_FROM_CENTER_CM = 160;
 	private boolean roll_back = false;
 
 	/**
@@ -76,7 +80,7 @@ public class HelloWorld extends Activity
 		setContentView(R.layout.main);
 		this.sensor_manager = (SensorManager)getSystemService(SENSOR_SERVICE);
 		this.accelerometer = this.sensor_manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
+        
 		if(mMultiplayerClient != null) {
 			// On data recieved
 			mMultiplayerClient.setOnGameDataReceivedListener(new LocalMultiplayerClient.OnGameDataReceivedListener() {
@@ -86,7 +90,6 @@ public class HelloWorld extends Activity
 					if(game_data.has("CHAT")){
 
 						try {
-							//addChatMessage(sender.getName(), game_data.getString("CHAT"));
 							String[] acceleration = game_data.getString("CHAT").split(" ");
 							for(int i = 0; i < acceleration.length; i++) {
 								player_values.get(sender.getName()).set(i, Float.parseFloat(acceleration[i]));
@@ -98,12 +101,16 @@ public class HelloWorld extends Activity
 				}
 			});
 		}
+
+        /* will make the screen be always on until this Activity gets destroyed. */
+        final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        this.mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "My Tag");
+        this.mWakeLock.acquire();
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
-
 		//Launch the StartupActivity to connect to the robot
 		Intent i = new Intent(this, StartupActivity.class);
 		startActivityForResult(i, STARTUP_ACTIVITY);
@@ -190,7 +197,6 @@ public class HelloWorld extends Activity
 
 	/**
 	 * AsyncDataListener that will be assigned to the DeviceMessager, listen for streaming data, and then do the
-	 *
 	 */
 	private DeviceMessenger.AsyncDataListener mDataListener = new DeviceMessenger.AsyncDataListener() {
 		@Override

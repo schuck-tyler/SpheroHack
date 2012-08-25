@@ -139,17 +139,17 @@ public class AvailableGamesActivity extends Activity
     	mMultiplayerClient.requestAvailableGames();
     }
 
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        
-        Dialog d = null;
-        
-        if(id == sSetNameDialog){
-            d = new SetNameDialog(this);
-        }
-        
-        return d;
-    }
+//    @Override
+//    protected Dialog onCreateDialog(int id) {
+//        
+//        Dialog d = null;
+//        
+//        if(id == sSetNameDialog){
+//            d = new SetNameDialog(this);
+//        }
+//        
+//        return d;
+//    }
 
     /**
      * A BaseAdapter that keeps track of the games received from the multiplayer service
@@ -199,28 +199,28 @@ public class AvailableGamesActivity extends Activity
     /**
      * A Dialog that asks for a username, and sets this username
      */
-    public class SetNameDialog extends Dialog {
-
-        public SetNameDialog(Context context) {
-            super(context);
-            
-            requestWindowFeature(Window.FEATURE_NO_TITLE);
-            
-            setContentView(R.layout.set_name_dialog);
-
-            //When the user clicks "done", record the name
-            findViewById(R.id.done_button).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mPlayerName = getNameString();
-                    mMultiplayerClient.setLocalPlayer(new RemotePlayer(mPlayerName, 0, false, false, true));
-                    dismissDialog(sSetNameDialog);
-                }
-            });
-        }
-        
-        private String getNameString(){
-            return ((EditText)findViewById(R.id.name_field)).getText().toString();
-        }
-    }
+//    public class SetNameDialog extends Dialog {
+//
+//        public SetNameDialog(Context context) {
+//            super(context);
+//            
+//            requestWindowFeature(Window.FEATURE_NO_TITLE);
+//            
+//            setContentView(R.layout.set_name_dialog);
+//
+//            //When the user clicks "done", record the name
+//            findViewById(R.id.done_button).setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    mPlayerName = getNameString();
+//                    mMultiplayerClient.setLocalPlayer(new RemotePlayer(mPlayerName, 0, false, false, true));
+//                    dismissDialog(sSetNameDialog);
+//                }
+//            });
+//        }
+//        
+//        private String getNameString(){
+//            return ((EditText)findViewById(R.id.name_field)).getText().toString();
+//        }
+//    }
 }
