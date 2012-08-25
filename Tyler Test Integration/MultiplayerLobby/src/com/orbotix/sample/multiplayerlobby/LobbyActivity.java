@@ -12,6 +12,10 @@ import android.widget.TextView;
 import orbotix.multiplayer.LocalMultiplayerClient;
 import orbotix.multiplayer.MultiplayerGame;
 import orbotix.multiplayer.RemotePlayer;
+import orbotix.robot.base.FrontLEDOutputCommand;
+import orbotix.robot.base.Robot;
+import orbotix.robot.base.RobotProvider;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,7 +60,7 @@ public class LobbyActivity extends Activity {
      */
     public static final int EXTRA_ACTION_JOIN_GAME = 1;
     
-    
+    public static Robot robot;
 
     //Views
     private TextView mGameStateText;
@@ -185,6 +189,12 @@ public class LobbyActivity extends Activity {
 
         mMultiplayerClient.leaveGame();
         mMultiplayerClient.stop();
+
+		FrontLEDOutputCommand.sendCommand(robot, 0);
+		robot = null;
+
+		//Disconnect Robot
+		RobotProvider.getDefaultProvider().removeAllControls();
     }
 
     /**
@@ -193,6 +203,7 @@ public class LobbyActivity extends Activity {
      */
     public void onStartGameClick(View v){
     	Intent i = new Intent(this, HelloWorld.class);
+    	HelloWorld.mRobot = robot;
 
 //        List<RemotePlayer> players = new LinkedList<RemotePlayer>();
 //        updatePlayerList(players);

@@ -17,6 +17,8 @@ import com.orbotix.sample.multiplayerlobby.view.GameListItemView;
 import orbotix.multiplayer.LocalMultiplayerClient;
 import orbotix.multiplayer.MultiplayerGame;
 import orbotix.multiplayer.RemotePlayer;
+import orbotix.robot.base.FrontLEDOutputCommand;
+import orbotix.robot.base.RobotProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,9 +131,8 @@ public class AvailableGamesActivity extends Activity
      */
     public void onCreateGameClick(View v){
 
-        Intent i = new Intent(this, LobbyActivity.class);
-        i.putExtra(LobbyActivity.EXTRA_ACTION, LobbyActivity.EXTRA_ACTION_HOST_GAME);
-        i.putExtra(LobbyActivity.EXTRA_USER_NAME, mPlayerName);
+        Intent i = new Intent(this, SpheroSetupActivity.class);
+        i.putExtra(SpheroSetupActivity.EXTRA_USER_NAME, mPlayerName);
         startActivity(i);
     }
     
@@ -195,7 +196,7 @@ public class AvailableGamesActivity extends Activity
             return view;
         }
     }
-
+    
     /**
      * A Dialog that asks for a username, and sets this username
      */

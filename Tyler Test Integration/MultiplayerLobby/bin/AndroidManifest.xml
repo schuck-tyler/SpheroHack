@@ -67,5 +67,8 @@
             android:theme="@android:style/Theme.Dialog" 
             />
 
+        <activity android:name="SpheroSetupActivity"
+		    	  android:screenOrientation="landscape"
+		    	  android:launchMode="singleTop"/>
     </application>
 </manifest> 

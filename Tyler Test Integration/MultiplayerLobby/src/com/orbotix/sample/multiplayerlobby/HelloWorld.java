@@ -62,7 +62,7 @@ public class HelloWorld extends Activity
 	/**
 	 * The Sphero Robot
 	 */
-	private Robot mRobot;
+	public static Robot mRobot;
 	private RobotControl robot_control;
 
 	private SensorManager sensor_manager;
@@ -78,6 +78,19 @@ public class HelloWorld extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		
+		if(mRobot == null) System.out.println("Sphero is null.");
+		
+		this.robot_control = RobotProvider.getDefaultProvider().getRobotControl(mRobot);
+		this.robot_control.setDriveAlgorithm(new TiltDriveAlgorithm());
+		sensor_manager.registerListener(this.accelerometer_listener, this.accelerometer, SensorManager.SENSOR_DELAY_GAME);
+
+		FrontLEDOutputCommand.sendCommand(mRobot, 255.0f);
+		requestDataStreaming();
+
+		//Set the AsyncDataListener that will process each response.
+		DeviceMessenger.getInstance().addAsyncDataListener(mRobot, mDataListener);
+		
 		this.sensor_manager = (SensorManager)getSystemService(SENSOR_SERVICE);
 		this.accelerometer = this.sensor_manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         
@@ -112,15 +125,15 @@ public class HelloWorld extends Activity
 	protected void onStart() {
 		super.onStart();
 		//Launch the StartupActivity to connect to the robot
-		Intent i = new Intent(this, StartupActivity.class);
-		startActivityForResult(i, STARTUP_ACTIVITY);
+		//Intent i = new Intent(this, StartupActivity.class);
+		//startActivityForResult(i, STARTUP_ACTIVITY);
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		if(requestCode == STARTUP_ACTIVITY && resultCode == RESULT_OK){
+		/*if(requestCode == STARTUP_ACTIVITY && resultCode == RESULT_OK){
 
 			//Get the connected Robot
 			final String robot_id = data.getStringExtra(StartupActivity.EXTRA_ROBOT_ID);
@@ -136,7 +149,7 @@ public class HelloWorld extends Activity
 				//Set the AsyncDataListener that will process each response.
 				DeviceMessenger.getInstance().addAsyncDataListener(mRobot, mDataListener);
 			}
-		}
+		}*/
 	}
 
 	@Override
@@ -160,17 +173,12 @@ public class HelloWorld extends Activity
 
 		@Override
 		public void onSensorChanged(SensorEvent event) {
-			System.out.print("In onSensorChanged, ");
 			if(mRobot == null || event == null)
 				return;
-			System.out.print("(mRobot != null && event != null), ");
 			if(event.sensor.getType() != Sensor.TYPE_ACCELEROMETER)
 				return;
-			System.out.print("event is from accelerometer, ");
 			if (roll_back)
 				return;
-			System.out.print("(!roll_back)");
-			System.out.println();
 
 
 			float x = event.values[0];
@@ -190,7 +198,6 @@ public class HelloWorld extends Activity
 			}
 
 			robot_control.drive(x, y, z);
-			//System.out.println ("x: " + Float.toString(x) + ", y: " + Float.toString(y) + ", z: " + Float.toString(z));
 		}
 		
 	};

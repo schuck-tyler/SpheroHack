@@ -139,7 +139,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int BackgroundLayout=0x7f05000b;
         public static final int BlueSeekBar=0x7f05002a;
         public static final int BlueTextView=0x7f050029;
-        public static final int BuyButton=0x7f050045;
+        public static final int BuyButton=0x7f050046;
         public static final int CalibrationView=0x7f05000e;
         public static final int ColorPickerBase=0x7f050023;
         public static final int ColorPickerSpace=0x7f050018;
@@ -157,21 +157,21 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int RValueText=0x7f05001e;
         public static final int RedSeekBar=0x7f050026;
         public static final int RedTextView=0x7f050025;
-        public static final int RetryConnectButton=0x7f050043;
-        public static final int RobotList=0x7f050044;
+        public static final int RetryConnectButton=0x7f050044;
+        public static final int RobotList=0x7f050045;
         public static final int SliderLayout=0x7f050024;
-        public static final int StartupProgress=0x7f050046;
-        public static final int StatusLabel=0x7f050042;
+        public static final int StartupProgress=0x7f050047;
+        public static final int StatusLabel=0x7f050043;
         public static final int Title=0x7f050017;
-        public static final int TitleIcon=0x7f050047;
+        public static final int TitleIcon=0x7f050048;
         public static final int TitleSpace=0x7f05000f;
-        public static final int TitleText=0x7f050048;
-        public static final int arrow_down=0x7f05003e;
-        public static final int arrow_up=0x7f05003d;
-        public static final int calibration=0x7f050037;
-        public static final int close_button=0x7f05003a;
+        public static final int TitleText=0x7f050049;
+        public static final int arrow_down=0x7f05003d;
+        public static final int arrow_up=0x7f05003c;
+        public static final int calibration=0x7f050040;
+        public static final int close_button=0x7f050039;
         public static final int create_game_button=0x7f050009;
-        public static final int done_button=0x7f050039;
+        public static final int done_button=0x7f050038;
         public static final int end_game_button=0x7f050035;
         public static final int footer=0x7f050008;
         public static final int game_state_label=0x7f05002d;
@@ -180,13 +180,14 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int horizontal=0x7f050000;
         public static final int hr=0x7f050010;
         public static final int icon=0x7f050004;
-        public static final int name_field=0x7f050038;
-        public static final int name_label=0x7f050040;
+        public static final int instructions=0x7f050041;
+        public static final int name_field=0x7f050037;
+        public static final int name_label=0x7f05003f;
         public static final int new_color=0x7f05001c;
         public static final int options_button=0x7f050012;
         public static final int panel_layout=0x7f05002c;
         public static final int pause_game_button=0x7f050036;
-        public static final int player_name=0x7f05003b;
+        public static final int player_name=0x7f05003a;
         public static final int players_label=0x7f05002f;
         public static final int players_scroll=0x7f050031;
         public static final int players_text=0x7f050033;
@@ -199,15 +200,15 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int roll_button_image=0x7f050015;
         public static final int roll_button_label=0x7f050016;
         public static final int roll_button_layout=0x7f050014;
-        public static final int scroller=0x7f05003c;
+        public static final int scroller=0x7f05003b;
         public static final int start_game_button=0x7f050034;
         public static final int text=0x7f050011;
         public static final int title=0x7f050005;
         public static final int titlebar=0x7f050006;
         public static final int top_hr=0x7f05002b;
-        public static final int tracks=0x7f05003f;
+        public static final int tracks=0x7f05003e;
         public static final int vertical=0x7f050001;
-        public static final int webview=0x7f050041;
+        public static final int webview=0x7f050042;
     }
     public static final class layout {
         public static final int action_item=0x7f030000;
@@ -223,9 +224,10 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int popover=0x7f03000a;
         public static final int popup=0x7f03000b;
         public static final int robot_picker_cell=0x7f03000c;
-        public static final int sphero_world_web_view=0x7f03000d;
-        public static final int startup=0x7f03000e;
-        public static final int title_space=0x7f03000f;
+        public static final int sphero_setup=0x7f03000d;
+        public static final int sphero_world_web_view=0x7f03000e;
+        public static final int startup=0x7f03000f;
+        public static final int title_space=0x7f030010;
     }
     public static final class string {
         public static final int BuySphero=0x7f06000c;
@@ -233,6 +235,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int calibration_title=0x7f06000b;
         public static final int color_picker_title=0x7f060009;
         public static final int done_button_text=0x7f06000a;
+        public static final int setup_instructions=0x7f06000d;
         public static final int startup_connecting=0x7f060002;
         public static final int startup_connection_failed=0x7f060003;
         public static final int startup_no_paired_robots=0x7f060007;
