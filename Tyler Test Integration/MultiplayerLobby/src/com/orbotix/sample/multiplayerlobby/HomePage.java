@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 
 public class HomePage extends Activity{
+	private static final String mUserName = "tempName";
 	public static final String PREFERENCE_FILENAME = "AppGamePrefs";
 	private SharedPreferences gameSettings;
 	public static String yourName;
@@ -21,9 +22,8 @@ public class HomePage extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_page);
         
-        
         gameSettings = getSharedPreferences(PREFERENCE_FILENAME, MODE_PRIVATE);
-        yourName = gameSettings.getString("USER_NAME", randomName());
+        yourName = gameSettings.getString("USER_NAME", mUserName);
     }
 	
 	public void onCreateGameInstance(View v){

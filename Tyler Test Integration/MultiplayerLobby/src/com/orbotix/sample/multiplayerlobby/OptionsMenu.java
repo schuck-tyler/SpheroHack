@@ -1,5 +1,7 @@
 package com.orbotix.sample.multiplayerlobby;
 
+import java.io.Console;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -23,20 +25,27 @@ public class OptionsMenu extends Activity {
 		playerName.setText(HomePage.yourName);
 	}
 	
-	public void onSaveNameClick(View v){
 
+	public void onCloseClickWithSaving(View v){
 		EditText name = (EditText) findViewById(R.id.name_field);
 		
-		HomePage.yourName = name.getText().toString();
+		String nameText = name.getText().toString();
 		
-		//call functions to check for spaces and errors in name
+		// checks to see if the name is empty or nothing but spaces
+		if(nameText.trim().isEmpty()){
+			finish();
+			return;
+		}
 		
+		// Saves the name
+		HomePage.yourName = nameText;
 		prefEditor.putString("USER_NAME", HomePage.yourName);
 		prefEditor.commit();
-	}
-
-	
-	public void onCloseClick(View v){
+		
 		finish();
+	}
+	
+	public void onCloseClickNoSaving(View v){
+		finish();		
 	}
 }

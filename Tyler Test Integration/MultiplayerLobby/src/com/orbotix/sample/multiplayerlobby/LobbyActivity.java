@@ -259,7 +259,6 @@ public class LobbyActivity extends Activity {
         StringBuilder str = new StringBuilder();
 
         for(RemotePlayer player : players){
-
             if(player.getIsHost()){
                 str.append("* ");
             }
