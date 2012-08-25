@@ -252,6 +252,7 @@ public class HelloWorld extends Activity
 									roll_back = true;
 									//RollCommand.sendCommand(mRobot, (int) angle, 0.6f);
 									robot_control.roll((float)angle, 0.6f);
+									System.out.println("OUT OF BOUNDS!");
 								}
 
 							} else {
