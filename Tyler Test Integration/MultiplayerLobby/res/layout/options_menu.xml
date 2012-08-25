@@ -14,34 +14,37 @@
         />
 
     <Button
-        android:id="@+id/done_button"
+        android:id="@+id/close_and_save_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/name_field"
+        android:layout_below="@+id/player_name"
+        android:layout_alignParentRight="true"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:text="Done"
-        android:onClick="onSaveNameClick"
+        android:text="Save Changes"
+        android:onClick="onCloseClickWithSaving"
         />
+    
     <Button
-        android:id="@+id/close_button"
+        android:id="@+id/close_without_save_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/player_name"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/close_and_save_button"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:text="close"
-        android:onClick="onCloseClick"
+        android:onClick="onCloseClickNoSaving"
         />
 
     <TextView
         android:id="@+id/player_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/done_button"
+        android:layout_below="@+id/name_field"
         android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:layout_marginTop="15dp"
         android:text="Large Text"
         android:textAppearance="?android:attr/textAppearanceLarge" />
