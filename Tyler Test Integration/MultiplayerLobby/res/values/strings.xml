@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MultiplayerLobby</string>
+    <string name="setup_instructions">Using two fingers, rotate the sphero until the blue light is facing you. Press Done when finished.</string>
 </resources>

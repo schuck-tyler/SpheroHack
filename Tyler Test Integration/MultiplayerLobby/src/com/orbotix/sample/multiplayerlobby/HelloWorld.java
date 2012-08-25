@@ -43,15 +43,15 @@ import android.hardware.SensorManager;
 /**
  * Connects to an available Sphero robot, and then flashes its LED.
  */
-public class HelloWorld extends ControllerActivity implements SensorEventListener
+public class HelloWorld extends Activity
 {
 	protected PowerManager.WakeLock mWakeLock;
 	private final static int TOTAL_PACKET_COUNT = 200;
 	private final static int PACKET_COUNT_THRESHOLD = 50;
 	private int mPacketCounter;
 
-	private final static int BOUNDARY_DISTANCE_FROM_CENTER_CM = 2000;
-	private final static int BACK_IN_BOUNDS_FROM_CENTER_CM = 140;
+	private final static int BOUNDARY_DISTANCE_FROM_CENTER_CM = 200;
+	private final static int BACK_IN_BOUNDS_FROM_CENTER_CM = 160;
 	private boolean roll_back = false;
 
 	/**
@@ -62,7 +62,7 @@ public class HelloWorld extends ControllerActivity implements SensorEventListene
 	/**
 	 * The Sphero Robot
 	 */
-	private Robot mRobot;
+	public static Robot mRobot;
 	private RobotControl robot_control;
 
 	private SensorManager sensor_manager;
@@ -78,11 +78,21 @@ public class HelloWorld extends ControllerActivity implements SensorEventListene
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		
+		if(mRobot == null) System.out.println("Sphero is null.");
+		
+		this.robot_control = RobotProvider.getDefaultProvider().getRobotControl(mRobot);
+		this.robot_control.setDriveAlgorithm(new TiltDriveAlgorithm());
+		sensor_manager.registerListener(this.accelerometer_listener, this.accelerometer, SensorManager.SENSOR_DELAY_GAME);
+
+		FrontLEDOutputCommand.sendCommand(mRobot, 255.0f);
+		requestDataStreaming();
+
+		//Set the AsyncDataListener that will process each response.
+		DeviceMessenger.getInstance().addAsyncDataListener(mRobot, mDataListener);
+		
 		this.sensor_manager = (SensorManager)getSystemService(SENSOR_SERVICE);
 		this.accelerometer = this.sensor_manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
-        //Add the CalibrationView as a Controller
-        addController((CalibrationView)findViewById(R.id.calibration));
         
 		if(mMultiplayerClient != null) {
 			// On data recieved
@@ -115,15 +125,15 @@ public class HelloWorld extends ControllerActivity implements SensorEventListene
 	protected void onStart() {
 		super.onStart();
 		//Launch the StartupActivity to connect to the robot
-		Intent i = new Intent(this, StartupActivity.class);
-		startActivityForResult(i, STARTUP_ACTIVITY);
+		//Intent i = new Intent(this, StartupActivity.class);
+		//startActivityForResult(i, STARTUP_ACTIVITY);
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		if(requestCode == STARTUP_ACTIVITY && resultCode == RESULT_OK){
+		/*if(requestCode == STARTUP_ACTIVITY && resultCode == RESULT_OK){
 
 			//Get the connected Robot
 			final String robot_id = data.getStringExtra(StartupActivity.EXTRA_ROBOT_ID);
@@ -131,7 +141,7 @@ public class HelloWorld extends ControllerActivity implements SensorEventListene
 				mRobot = RobotProvider.getDefaultProvider().findRobot(robot_id);
 				this.robot_control = RobotProvider.getDefaultProvider().getRobotControl(mRobot);
 				this.robot_control.setDriveAlgorithm(new TiltDriveAlgorithm());
-				sensor_manager.registerListener(this, this.accelerometer, SensorManager.SENSOR_DELAY_GAME);
+				sensor_manager.registerListener(this.accelerometer_listener, this.accelerometer, SensorManager.SENSOR_DELAY_GAME);
 
 				FrontLEDOutputCommand.sendCommand(mRobot, 255.0f);
 				requestDataStreaming();
@@ -139,7 +149,7 @@ public class HelloWorld extends ControllerActivity implements SensorEventListene
 				//Set the AsyncDataListener that will process each response.
 				DeviceMessenger.getInstance().addAsyncDataListener(mRobot, mDataListener);
 			}
-		}
+		}*/
 	}
 
 	@Override
@@ -152,45 +162,45 @@ public class HelloWorld extends ControllerActivity implements SensorEventListene
 		//Disconnect Robot
 		RobotProvider.getDefaultProvider().removeAllControls();
 	}
+	
+	private SensorEventListener accelerometer_listener = new SensorEventListener() {
 
-	@Override
-	public void onAccuracyChanged(Sensor arg0, int arg1) {
-
-	}
-
-	@Override
-	public void onSensorChanged(SensorEvent event) {
-		System.out.print("In onSensorChanged, ");
-		if(mRobot == null || event == null)
-			return;
-		System.out.print("(mRobot != null && event != null), ");
-		if(event.sensor.getType() != Sensor.TYPE_ACCELEROMETER)
-			return;
-		System.out.print("event is from accelerometer, ");
-		if (roll_back)
-			return;
-		System.out.print("(!roll_back)");
-		System.out.println();
-
-
-		float x = event.values[0];
-		float y = event.values[1];
-		float z = event.values[2];
-
-		if(player_values != null) {
-			int num_players = player_values.size();
-			for (String player : player_values.keySet()) {
-				x += player_values.get(player).get(0);
-				y += player_values.get(player).get(1);
-				z += player_values.get(player).get(2);
-			}
-			x /= num_players;
-			y /= num_players;
-			z /= num_players;
+		@Override
+		public void onAccuracyChanged(Sensor arg0, int arg1) {
+			// TODO Auto-generated method stub
+			
 		}
 
-		robot_control.drive(x, y, z);
-	}
+		@Override
+		public void onSensorChanged(SensorEvent event) {
+			if(mRobot == null || event == null)
+				return;
+			if(event.sensor.getType() != Sensor.TYPE_ACCELEROMETER)
+				return;
+			if (roll_back)
+				return;
+
+
+			float x = event.values[0];
+			float y = event.values[1];
+			float z = event.values[2];
+
+			if(player_values != null) {
+				int num_players = player_values.size();
+				for (String player : player_values.keySet()) {
+					x += player_values.get(player).get(0);
+					y += player_values.get(player).get(1);
+					z += player_values.get(player).get(2);
+				}
+				x /= num_players;
+				y /= num_players;
+				z /= num_players;
+			}
+
+			robot_control.drive(x, y, z);
+		}
+		
+	};
 
 	/**
 	 * AsyncDataListener that will be assigned to the DeviceMessager, listen for streaming data, and then do the
@@ -249,6 +259,7 @@ public class HelloWorld extends ControllerActivity implements SensorEventListene
 									roll_back = true;
 									//RollCommand.sendCommand(mRobot, (int) angle, 0.6f);
 									robot_control.roll((float)angle, 0.6f);
+									System.out.println("OUT OF BOUNDS!");
 								}
 
 							} else {
