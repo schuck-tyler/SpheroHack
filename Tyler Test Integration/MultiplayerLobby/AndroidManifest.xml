@@ -61,6 +61,11 @@
                   android:launchMode="singleTop"
                   android:theme="@android:style/Theme.Translucent"
                   />
+        
+        <activity
+            android:name="OptionsMenu"
+            android:theme="@android:style/Theme.Dialog" 
+            />
 
     </application>
 </manifest> 
