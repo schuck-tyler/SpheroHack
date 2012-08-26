@@ -139,7 +139,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int BackgroundLayout=0x7f05000b;
         public static final int BlueSeekBar=0x7f05002a;
         public static final int BlueTextView=0x7f050029;
-        public static final int BuyButton=0x7f050046;
+        public static final int BuyButton=0x7f050047;
         public static final int CalibrationView=0x7f05000e;
         public static final int ColorPickerBase=0x7f050023;
         public static final int ColorPickerSpace=0x7f050018;
@@ -157,21 +157,22 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int RValueText=0x7f05001e;
         public static final int RedSeekBar=0x7f050026;
         public static final int RedTextView=0x7f050025;
-        public static final int RetryConnectButton=0x7f050044;
-        public static final int RobotList=0x7f050045;
+        public static final int RetryConnectButton=0x7f050045;
+        public static final int RobotList=0x7f050046;
         public static final int SliderLayout=0x7f050024;
-        public static final int StartupProgress=0x7f050047;
-        public static final int StatusLabel=0x7f050043;
+        public static final int StartupProgress=0x7f050048;
+        public static final int StatusLabel=0x7f050044;
         public static final int Title=0x7f050017;
-        public static final int TitleIcon=0x7f050048;
+        public static final int TitleIcon=0x7f050049;
         public static final int TitleSpace=0x7f05000f;
-        public static final int TitleText=0x7f050049;
+        public static final int TitleText=0x7f05004a;
         public static final int arrow_down=0x7f05003d;
         public static final int arrow_up=0x7f05003c;
         public static final int calibration=0x7f050040;
-        public static final int close_button=0x7f050039;
+        public static final int close_and_save_button=0x7f050038;
+        public static final int close_without_save_button=0x7f05003a;
         public static final int create_game_button=0x7f050009;
-        public static final int done_button=0x7f050038;
+        public static final int done_button=0x7f050041;
         public static final int end_game_button=0x7f050035;
         public static final int footer=0x7f050008;
         public static final int game_state_label=0x7f05002d;
@@ -180,14 +181,14 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int horizontal=0x7f050000;
         public static final int hr=0x7f050010;
         public static final int icon=0x7f050004;
-        public static final int instructions=0x7f050041;
+        public static final int instructions=0x7f050042;
         public static final int name_field=0x7f050037;
         public static final int name_label=0x7f05003f;
         public static final int new_color=0x7f05001c;
         public static final int options_button=0x7f050012;
         public static final int panel_layout=0x7f05002c;
         public static final int pause_game_button=0x7f050036;
-        public static final int player_name=0x7f05003a;
+        public static final int player_name=0x7f050039;
         public static final int players_label=0x7f05002f;
         public static final int players_scroll=0x7f050031;
         public static final int players_text=0x7f050033;
@@ -208,7 +209,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int top_hr=0x7f05002b;
         public static final int tracks=0x7f05003e;
         public static final int vertical=0x7f050001;
-        public static final int webview=0x7f050042;
+        public static final int webview=0x7f050043;
     }
     public static final class layout {
         public static final int action_item=0x7f030000;
